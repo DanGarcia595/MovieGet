@@ -1,0 +1,27 @@
+#!/bin/bash
+function main {
+	Movie=$(zenity --entry --text "Enter a movie name" --title "Get a movie from YIFY")
+	if [ -z "$Movie" ]; then
+		return 1
+	fi
+	MovieName=$(echo "$Movie" | sed -e 's/ /%20/g')
+	URLs=$(curl -s  https://yts.ag/rss/$MovieName/720p/all/0 | grep enclosure| grep -o https://yts.....................................................................)
+	count=$(echo $URLs | wc -w)
+
+	if [ $count -lt 1 ]; then
+		zenity --info --text  "No movies found. Change your search."
+	else  
+		if [ $count -gt 1 ]; then
+			zenity --info --text  "Too many movies! Refine your search."
+		else
+			zenity --info --text "Got it! Your movie download will begin shortly!"
+			transmission-gtk $URLs &
+		fi 
+	fi
+
+	return 0
+}
+
+while main ; do 
+	echo nop
+done
