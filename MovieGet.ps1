@@ -25,8 +25,7 @@ while(1){
             try{
                 Write-Host 'Please enter a number for the movie above: ' -foregroundcolor "Magenta" -NoNewline
                 $num =  [int](Read-Host) #Prompt if there is more than one item found
-                if($num -lt 1){ Write-Host "That wasn't a number, idiot" -foregroundcolor "Red"}
-                Write-Host $finalList[($num-1)].Url
+                if($num -lt 1){ Write-Host "That wasn't a number, idiot" -foregroundcolor "Red"} #non-numeric selection
                 wget $finalList[($num-1)].Url -OutFile File.torrent #We need this to get the torrent file from the rss feed url
                 Invoke-Item .\File.torrent #Opens torrent with default client
             }catch{
@@ -39,7 +38,7 @@ while(1){
             }catch {
                 Write-Host "Failed in download! File may no longer be available!" -foregroundcolor "Red"
             }
-        }elseif($finalList.Count -eq 0){
+        }elseif($finalList.Count -eq 0){ # list of seach results was empty
             Write-Host "No Movies Found!" -foregroundcolor "Red"
         }
     }
